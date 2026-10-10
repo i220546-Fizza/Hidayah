@@ -46,14 +46,15 @@ Statuses: Not Started, In Progress, Implemented, Tested, Blocked.
 | Email verification | Blocked | Needs an email service and credentials from you |
 | Password reset by email | Blocked | Same reason |
 | Mobile secure token storage | Not Started | Phase 9 |
-| Running on Windows | Not Tested | Linux only |
+| Running on Windows | Tested | Backend, migrations, 126 tests, health check run on your Windows PC with Docker Desktop |
+| Local database on host port 5433 | Tested | Container healthy, `check-db` OK, pgvector 0.8.1, migration 0001; the 126 tests took 17 minutes there (30 s in the sandbox): cause not yet investigated |
 
 ## Everything else
 
 | Area | Status |
 |---|---|
 | Authentication and accounts | See Phase 4 above |
-| Quran, translation, tafsir | Not Started (licensing review first) |
+| Quran, translation, tafsir | In Progress: licence register written, nothing imported; awaiting your decisions |
 | Hadith and gradings | Not Started (licensing review first) |
 | Duas | Not Started |
 | RAG assistant | Not Started |

@@ -43,15 +43,5 @@ dua or chunk row points back to it, so any displayed text can be traced to its l
 
 ## Source register
 
-Nothing has been reviewed yet. Candidate sources below are NOT approved and their licences have
-NOT been checked. Do not treat their presence here as permission.
-
-| Candidate | Needed | Licence checked | Commercial use | Status |
-|---|---|---|---|---|
-| Quran Arabic text (e.g. Tanzil, Quran Foundation API) | Arabic text | No | Unknown | Not reviewed |
-| English and Urdu translations | Per translation | No | Unknown | Not reviewed |
-| Tafsir works | Per work | No | Unknown | Not reviewed |
-| Hadith collections and gradings | Text and grader attribution | No | Unknown | Not reviewed |
-| Dua references | Cited originals | No | Unknown | Not reviewed |
-
-To be completed at the start of Phase 5.
+The checked register lives in [source-register.md](source-register.md). Nothing is approved yet.
+Candidate sources are NOT permission to import; each needs a person's confirmation.
