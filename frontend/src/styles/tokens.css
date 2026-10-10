@@ -1,0 +1,49 @@
+/*
+ * Hidayah design tokens — single source of truth for the web app.
+ * Mirrored in mobile/src/theme/tokens.ts. Change both together.
+ */
+:root {
+  /* Primary */
+  --color-emerald: #123c32;
+  --color-ivory: #f8f5ed;
+  --color-gold: #c6a568;
+  --color-sand: #e9e2d4;
+  --color-charcoal: #26352f;
+  --color-white: #ffffff;
+
+  /* Supporting */
+  --color-sage: #a9bdaf;
+  --color-bronze: #8b6b47;
+  --color-terracotta: #b85c50;
+
+  /* Fonts */
+  --font-display: 'Playfair Display Variable', 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-arabic: 'Amiri', 'Noto Naskh Arabic Variable', 'Noto Naskh Arabic', serif;
+  --font-urdu: 'Noto Nastaliq Urdu Variable', 'Noto Nastaliq Urdu', serif;
+
+  /* Shape and elevation: restrained */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --shadow-card: 0 1px 2px rgb(18 60 50 / 0.06), 0 4px 16px rgb(18 60 50 / 0.05);
+}
+
+@theme inline {
+  --color-emerald: var(--color-emerald);
+  --color-ivory: var(--color-ivory);
+  --color-gold: var(--color-gold);
+  --color-sand: var(--color-sand);
+  --color-charcoal: var(--color-charcoal);
+  --color-sage: var(--color-sage);
+  --color-bronze: var(--color-bronze);
+  --color-terracotta: var(--color-terracotta);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-arabic: var(--font-arabic);
+  --font-urdu: var(--font-urdu);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --shadow-card: var(--shadow-card);
+}

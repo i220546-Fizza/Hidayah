@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+
+# Builds
+dist/
+build/
+.expo/
+
+# Environment and secrets (never commit)
+.env
+.env.*
+!.env.example
+
+# Data and uploads (provenance is documented in data/README.md)
+data/raw/
+backend/uploads/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
