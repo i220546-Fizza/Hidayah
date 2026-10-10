@@ -21,6 +21,7 @@ dev = ["pytest>=8", "httpx>=0.27"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-ra"
 filterwarnings = ["error::sqlalchemy.exc.SAWarning"]
 
