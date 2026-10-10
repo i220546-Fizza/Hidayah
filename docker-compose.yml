@@ -21,5 +21,28 @@ services:
       timeout: 5s
       retries: 10
 
+  # OPTIONAL, throwaway database for running the automated tests quickly.
+  # Its data lives in memory (tmpfs) and disappears when the container stops, and it
+  # skips disk-sync safety on purpose. It never touches the volume above.
+  # Start with:  docker compose --profile test up -d db-test
+  db-test:
+    profiles: ["test"]
+    image: pgvector/pgvector:pg16
+    container_name: hidayah-db-test
+    command: ["postgres", "-c", "fsync=off", "-c", "synchronous_commit=off", "-c", "full_page_writes=off"]
+    environment:
+      POSTGRES_USER: hidayah
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: postgres
+    ports:
+      - "127.0.0.1:${HIDAYAH_TEST_DB_PORT:-5434}:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hidayah -d postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
 volumes:
   hidayah-db-data:

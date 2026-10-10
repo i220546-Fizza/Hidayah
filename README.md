@@ -80,6 +80,17 @@ $env:TEST_DATABASE_URL = "postgresql+psycopg://hidayah:change-me@localhost:5433/
 python -m pytest -q
 ```
 
+**Faster tests (optional).** On some Windows/Docker setups the first test takes minutes because the
+disk is slow for many small writes. A throwaway in-memory test database avoids that and never touches your
+real data:
+
+```powershell
+docker compose --profile test up -d db-test
+$env:TEST_DATABASE_URL = "postgresql+psycopg://hidayah:change-me@localhost:5434/hidayah_test"
+python -m pytest -q
+docker compose --profile test stop db-test    # when you are done
+```
+
 ### Database troubleshooting
 
 | Symptom | Cause and fix |
