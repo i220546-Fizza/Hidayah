@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { Logo } from '@/components/brand/Logo'
-import { ButtonLink } from '@/components/ui/Button'
+import { Button, ButtonLink } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
+import { useAuth } from '@/features/auth/useAuth'
 import { navItems } from './navItems'
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -17,6 +18,8 @@ export function Header() {
   const { pathname } = useLocation()
   const [openOn, setOpenOn] = useState<string | null>(null)
   const open = openOn === pathname
+  const { status, user, logout } = useAuth()
+  const accountName = user?.display_name || user?.email
 
   return (
     <header className="sticky top-0 z-40 border-b border-sand bg-ivory/95 backdrop-blur">
@@ -34,10 +37,23 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 lg:flex">
-          <ButtonLink to="/login" variant="quiet">
-            Log in
-          </ButtonLink>
-          <ButtonLink to="/register">Create account</ButtonLink>
+          {status === 'authenticated' ? (
+            <>
+              <span className="max-w-48 truncate text-sm text-charcoal/85" title={accountName}>
+                {accountName}
+              </span>
+              <Button variant="secondary" onClick={() => void logout()}>
+                Log out
+              </Button>
+            </>
+          ) : status === 'anonymous' ? (
+            <>
+              <ButtonLink to="/login" variant="quiet">
+                Log in
+              </ButtonLink>
+              <ButtonLink to="/register">Create account</ButtonLink>
+            </>
+          ) : null}
         </div>
 
         <button
@@ -64,12 +80,21 @@ export function Header() {
                 {item.label}
               </NavLink>
             ))}
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <ButtonLink to="/login" variant="secondary">
-                Log in
-              </ButtonLink>
-              <ButtonLink to="/register">Create account</ButtonLink>
-            </div>
+            {status === 'authenticated' ? (
+              <div className="mt-2 flex items-center justify-between gap-3">
+                <span className="truncate text-sm text-charcoal/85">{accountName}</span>
+                <Button variant="secondary" onClick={() => void logout()}>
+                  Log out
+                </Button>
+              </div>
+            ) : status === 'anonymous' ? (
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <ButtonLink to="/login" variant="secondary">
+                  Log in
+                </ButtonLink>
+                <ButtonLink to="/register">Create account</ButtonLink>
+              </div>
+            ) : null}
           </Container>
         </nav>
       )}

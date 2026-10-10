@@ -10,7 +10,7 @@ from tests.factories import make_source, make_version
 def test_committed_data_survives_new_engine_and_cleanup(migrated_engine):
     engine1 = create_engine(TEST_DATABASE_URL)
     with Session(engine1) as s:
-        user = User(email="persist@example.test")
+        user = User(email="persist@example.com")
         s.add(user)
         src_version = None
         src = make_source(s)
@@ -29,12 +29,12 @@ def test_committed_data_survives_new_engine_and_cleanup(migrated_engine):
     try:
         with Session(engine2) as s:
             found = s.get(User, user_id)
-            assert found is not None and found.email == "persist@example.test"
+            assert found is not None and found.email == "persist@example.com"
             assert s.scalar(text("SELECT count(*) FROM bookmarks")) == 1
     finally:
         with Session(engine2) as s:
             s.execute(text("DELETE FROM bookmarks"))
-            s.execute(text("DELETE FROM users WHERE email='persist@example.test'"))
+            s.execute(text("DELETE FROM users WHERE email='persist@example.com'"))
             s.execute(text("DELETE FROM verses"))
             s.execute(text("DELETE FROM surahs"))
             s.execute(text("DELETE FROM source_versions"))

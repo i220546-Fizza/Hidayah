@@ -1,8 +1,11 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { AuthProvider } from '@/features/auth/AuthContext'
 import { RootLayout } from '@/layouts/RootLayout'
+import { LoginPage } from '@/pages/LoginPage'
 import { LandingPage } from '@/pages/LandingPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { PlaceholderPage } from '@/pages/PlaceholderPage'
+import { RegisterPage } from '@/pages/RegisterPage'
 
 const placeholders = [
   { path: 'ask', title: 'Ask a question', phase: 'Phase 6 (assistant)' },
@@ -11,8 +14,6 @@ const placeholders = [
   { path: 'duas', title: 'Duas', phase: 'Phase 7' },
   { path: 'learning', title: 'Learning', phase: 'Phase 7' },
   { path: 'about', title: 'About Hidayah', phase: 'Phase 7' },
-  { path: 'login', title: 'Log in', phase: 'Phase 4 (accounts)' },
-  { path: 'register', title: 'Create account', phase: 'Phase 4 (accounts)' },
   { path: 'privacy', title: 'Privacy', phase: 'Phase 10' },
   { path: 'terms', title: 'Terms', phase: 'Phase 10' },
   { path: 'contact', title: 'Contact', phase: 'Phase 10' },
@@ -22,19 +23,23 @@ const placeholders = [
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<RootLayout />}>
-          <Route index element={<LandingPage />} />
-          {placeholders.map((p) => (
-            <Route
-              key={p.path}
-              path={p.path}
-              element={<PlaceholderPage title={p.title} phase={p.phase} />}
-            />
-          ))}
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route element={<RootLayout />}>
+            <Route index element={<LandingPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
+            {placeholders.map((p) => (
+              <Route
+                key={p.path}
+                path={p.path}
+                element={<PlaceholderPage title={p.title} phase={p.phase} />}
+              />
+            ))}
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

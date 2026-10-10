@@ -175,9 +175,9 @@ def test_email_must_be_lowercase(session):
 
 
 def test_email_unique(session):
-    make_user(session, email="a@example.test")
+    make_user(session, email="a@example.com")
     from app.models import User
-    _rejects(session, User(email="a@example.test"))
+    _rejects(session, User(email="a@example.com"))
 
 
 def _verse(session):

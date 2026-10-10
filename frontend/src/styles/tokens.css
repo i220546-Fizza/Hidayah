@@ -15,6 +15,8 @@
   --color-sage: #a9bdaf;
   --color-bronze: #8b6b47;
   --color-terracotta: #b85c50;
+  /* Deeper terracotta for small error text: 5.3:1 on ivory (the base shade is 4.1:1). */
+  --color-terracotta-deep: #a24b40;
 
   /* Fonts */
   --font-display: 'Playfair Display Variable', 'Playfair Display', Georgia, serif;
@@ -37,6 +39,7 @@
   --color-sage: var(--color-sage);
   --color-bronze: var(--color-bronze);
   --color-terracotta: var(--color-terracotta);
+  --color-terracotta-deep: var(--color-terracotta-deep);
 
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);

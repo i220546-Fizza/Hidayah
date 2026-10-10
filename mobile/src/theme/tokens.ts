@@ -12,6 +12,8 @@ export const colors = {
   sage: '#A9BDAF',
   bronze: '#8B6B47',
   terracotta: '#B85C50',
+  /** Deeper terracotta for small error text (5.3:1 on ivory). */
+  terracottaDeep: '#A24B40',
 } as const
 
 export const fonts = {

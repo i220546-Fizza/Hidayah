@@ -44,7 +44,15 @@ python -m venv .venv
 pip install -e ".[dev]"
 $env:DATABASE_URL = "postgresql+psycopg://hidayah:change-me@localhost:5432/hidayah"
 alembic upgrade head
+$env:SECRET_KEY = "any-long-random-text-for-local-use-only"   # optional locally; required in production
 uvicorn app.main:app --reload     # http://localhost:8000/health and /ready, docs at /docs
+```
+
+Create the first admin (it asks for the password privately; nothing is typed into chat or saved
+in history). Register the account on the website first, then promote it:
+
+```powershell
+python -m app.cli create-admin --email you@example.com
 ```
 
 Test the backend (needs the database running; it creates and drops a separate `hidayah_test`

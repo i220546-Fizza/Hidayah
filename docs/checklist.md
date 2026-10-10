@@ -29,11 +29,30 @@ Statuses: Not Started, In Progress, Implemented, Tested, Blocked.
 | docker-compose database | Implemented | NOT run in the sandbox (no Docker engine); you ran the same image earlier |
 | Backend running on Windows | Not Tested | Tested on Linux only |
 
+## Phase 4: accounts and authorization
+
+| Item | Status | Notes |
+|---|---|---|
+| Register, login, refresh, logout, logout-all | Tested | 126 backend tests plus real HTTP check, web cookie flow included |
+| Password hashing (Argon2id) and token design | Tested | See `docs/security.md` |
+| Refresh rotation and reuse detection | Tested | Replayed token revokes all sessions |
+| Roles checked on the server | Tested | User gets 403 on admin routes; last-admin protected |
+| Profile, preferences, password change | Tested | |
+| Bookmarks (own data only) | Tested | Other users' bookmarks are invisible |
+| Data export and account deletion | Tested | |
+| Login/register pages, header state, session handling | Tested | 27 frontend tests; not yet checked in a real browser |
+| Login survives a server restart | Tested | Real restart; data is in PostgreSQL |
+| Rate limiting | Implemented | In memory, one process only; needs Redis or a gateway to scale out |
+| Email verification | Blocked | Needs an email service and credentials from you |
+| Password reset by email | Blocked | Same reason |
+| Mobile secure token storage | Not Started | Phase 9 |
+| Running on Windows | Not Tested | Linux only |
+
 ## Everything else
 
 | Area | Status |
 |---|---|
-| Authentication and accounts | Not Started |
+| Authentication and accounts | See Phase 4 above |
 | Quran, translation, tafsir | Not Started (licensing review first) |
 | Hadith and gradings | Not Started (licensing review first) |
 | Duas | Not Started |

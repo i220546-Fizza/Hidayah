@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+import { AuthContext } from '@/features/auth/AuthContext'
 import { Header } from '@/layouts/Header'
 import { LandingPage } from '@/pages/LandingPage'
 
@@ -32,9 +33,13 @@ describe('Landing page', () => {
 describe('Header', () => {
   it('toggles the mobile menu with correct aria state', async () => {
     render(
-      <MemoryRouter>
-        <Header />
-      </MemoryRouter>,
+      <AuthContext.Provider
+        value={{ status: 'anonymous', user: null, login: vi.fn(), register: vi.fn(), logout: vi.fn() }}
+      >
+        <MemoryRouter>
+          <Header />
+        </MemoryRouter>
+      </AuthContext.Provider>,
     )
     const toggle = screen.getByRole('button', { name: /open menu/i })
     expect(toggle).toHaveAttribute('aria-expanded', 'false')
