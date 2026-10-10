@@ -34,34 +34,60 @@ npm run dev        # opens at http://localhost:5173
 
 ## Run the backend
 
-1. Copy `.env.example` to `.env` in the project root (keep the placeholder values for local use).
-2. Start the database from the project root: `docker compose up -d db`
-3. In the `backend` folder (PowerShell shown; use `source .venv/bin/activate` on macOS/Linux):
+PowerShell commands, in order. Start Docker Desktop first and wait until it says the engine is running.
 
 ```powershell
+# 1. From the project root: create your private settings file (it is git-ignored)
+Copy-Item .env.example .env
+
+# 2. Is Docker's Linux engine up? This must print a version, not an error.
+docker info --format "{{.ServerVersion}}"
+
+# 3. Start the database. It listens on host port 5433 (container port stays 5432),
+#    so it never collides with another PostgreSQL already using 5432.
+docker compose up -d db
+docker compose ps        # wait until STATUS says (healthy)
+```
+
+Then, in the `backend` folder:
+
+```powershell
+cd backend
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -e ".[dev]"
-$env:DATABASE_URL = "postgresql+psycopg://hidayah:change-me@localhost:5432/hidayah"
+python -m app.cli check-db       # shows user/port/database (never the password) and whether it connects
 alembic upgrade head
-$env:SECRET_KEY = "any-long-random-text-for-local-use-only"   # optional locally; required in production
-uvicorn app.main:app --reload     # http://localhost:8000/health and /ready, docs at /docs
+alembic current                  # should print 0001 (head)
+uvicorn app.main:app --reload    # http://localhost:8000/health and /ready, docs at /docs
 ```
 
-Create the first admin (it asks for the password privately; nothing is typed into chat or saved
-in history). Register the account on the website first, then promote it:
+The backend reads the root `.env` automatically, so you do not need to set `$env:DATABASE_URL`.
+You can also run Alembic from the project root: `alembic -c backend/alembic.ini upgrade head`.
+
+For sign-in on a real server set a long random `SECRET_KEY` in `.env`. Create the first admin
+(register on the website first; the password is asked privately, never typed into chat):
 
 ```powershell
 python -m app.cli create-admin --email you@example.com
 ```
 
 Test the backend (needs the database running; it creates and drops a separate `hidayah_test`
-database):
+database, so it needs the `TEST_DATABASE_URL` from `.env`):
 
 ```powershell
-$env:TEST_DATABASE_URL = "postgresql+psycopg://hidayah:change-me@localhost:5432/hidayah_test"
-python -m pytest
+$env:TEST_DATABASE_URL = "postgresql+psycopg://hidayah:change-me@localhost:5433/hidayah_test"
+python -m pytest -q
 ```
+
+### Database troubleshooting
+
+| Symptom | Cause and fix |
+|---|---|
+| `failed to connect to the docker API` | Docker Desktop's Linux engine is not running. Open Docker Desktop and wait for "Engine running". |
+| Container stuck in `Created`, port error | The host port is taken. Find who: `Get-NetTCPConnection -LocalPort 5433 -State Listen`. Pick another port in `.env` (`HIDAYAH_DB_PORT`) and the same port in `DATABASE_URL`, then `docker compose up -d db`. |
+| `role "hidayah" does not exist` | Another PostgreSQL answers on that port, not the Hidayah container. Check the port in `DATABASE_URL` matches `HIDAYAH_DB_PORT`. |
+| `password authentication failed` | The Docker volume remembers the password it was first created with. Changing `POSTGRES_PASSWORD` later does nothing. Use the original password. Do not delete the volume to "fix" it unless you accept losing the data. |
 
 ## Test and build the website
 

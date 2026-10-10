@@ -10,7 +10,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
       POSTGRES_DB: hidayah
     ports:
-      - "127.0.0.1:5432:5432" # reachable from this computer only
+      # Host port 5433 -> container port 5432. Many computers already run another
+      # PostgreSQL on 5432, so we avoid it. Change HIDAYAH_DB_PORT in .env if 5433 is busy.
+      - "127.0.0.1:${HIDAYAH_DB_PORT:-5433}:5432" # reachable from this computer only
     volumes:
       - hidayah-db-data:/var/lib/postgresql/data
     healthcheck:

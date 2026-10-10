@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 
 TEST_DATABASE_URL = os.environ.get(
     "TEST_DATABASE_URL",
-    "postgresql+psycopg://hidayah:change-me@localhost:5432/hidayah_test",
+    "postgresql+psycopg://hidayah:change-me@localhost:5433/hidayah_test",
 )
 
 # Make the whole app (including Alembic's env.py) use the test database.

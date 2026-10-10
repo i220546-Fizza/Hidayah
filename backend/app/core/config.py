@@ -1,21 +1,30 @@
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
+# This file is backend/app/core/config.py: parents[2] is backend/, its parent is the project root.
+_BACKEND_DIR = Path(__file__).resolve().parents[2]
+_ENV_FILES = (str(_BACKEND_DIR.parent / ".env"), str(_BACKEND_DIR / ".env"))
 
 # Only for local development and tests. Production refuses to start with this value.
 DEV_SECRET = "dev-only-secret-not-for-production-0123456789"
 
 
 class Settings(BaseSettings):
-    """Application settings, read from environment variables (and backend/.env)."""
+    """Application settings.
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    Real environment variables win. Otherwise values come from the project-root .env,
+    then backend/.env (later files win), wherever you start the command from.
+    """
+
+    model_config = SettingsConfigDict(env_file=_ENV_FILES, extra="ignore")
 
     env: str = Field(default="development", description="development | test | production")
     database_url: str = Field(
-        default="postgresql+psycopg://hidayah:change-me@localhost:5432/hidayah",
+        default="postgresql+psycopg://hidayah:change-me@localhost:5433/hidayah",
         description="SQLAlchemy URL. Never commit real credentials.",
     )
     secret_key: str = Field(default=DEV_SECRET, description="Signing key for access tokens")
