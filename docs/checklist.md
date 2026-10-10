@@ -15,11 +15,24 @@ Statuses: Not Started, In Progress, Implemented, Tested, Blocked.
 | Responsive navigation | Tested | Menu toggle test; real-device check pending |
 | Landing page | Tested | Verse and dua areas are honest empty states until verified data exists |
 
+## Phase 3: backend and database
+
+| Item | Status | Notes |
+|---|---|---|
+| FastAPI app, config, JSON logging, CORS | Tested | |
+| /health and /ready (database + pgvector) | Tested | Verified over real HTTP, including DB stopped (503) |
+| 42-table schema, Alembic migration 0001 | Tested | Up, down and up again; no drift between models and migration |
+| Licence rule enforced by the database | Tested | Each rejection checked against the intended constraint |
+| pgvector (vector search, HNSW index) | Tested | pgvector 0.6.0 in the sandbox; Docker image will be newer |
+| Full-text search column | Tested | |
+| Persistence across a PostgreSQL restart | Tested | Real server restart, data intact |
+| docker-compose database | Implemented | NOT run in the sandbox (no Docker engine); you ran the same image earlier |
+| Backend running on Windows | Not Tested | Tested on Linux only |
+
 ## Everything else
 
 | Area | Status |
 |---|---|
-| Backend, database, migrations | Not Started |
 | Authentication and accounts | Not Started |
 | Quran, translation, tafsir | Not Started (licensing review first) |
 | Hadith and gradings | Not Started (licensing review first) |

@@ -23,3 +23,8 @@ backend/uploads/
 .DS_Store
 Thumbs.db
 *.log
+
+# Python tooling
+*.egg-info/
+.pytest_cache/
+.ruff_cache/

@@ -6,8 +6,8 @@ Hidayah is an Islamic learning platform: a website, an Android and iOS app, and 
 backend. The goal is source-grounded learning from the Quran, tafsir, hadith and duas, with
 every claim traceable to an approved source.
 
-> **Status:** early development. Phase 2 (design foundation and landing page) is the only
-> part built. See `docs/checklist.md` for what is and is not done.
+> **Status:** early development. Built so far: the web design foundation and landing page
+> (Phase 2), and the backend skeleton with the database schema (Phase 3). See `docs/checklist.md` for what is and is not done.
 
 ## Structure
 
@@ -15,7 +15,7 @@ every claim traceable to an approved source.
 |---|---|
 | `frontend/` | Web app: React, TypeScript, Vite, Tailwind |
 | `mobile/` | Android and iOS app: React Native with Expo (tokens only so far) |
-| `backend/` | FastAPI API, PostgreSQL, RAG (not started) |
+| `backend/` | FastAPI API, PostgreSQL schema and migrations (RAG logic not started) |
 | `data/` | Dataset provenance notes. No religious text is committed yet |
 | `docs/` | Architecture, source policy, checklist |
 
@@ -30,6 +30,29 @@ From the `frontend` folder, in PowerShell or any terminal:
 ```bash
 npm install
 npm run dev        # opens at http://localhost:5173
+```
+
+## Run the backend
+
+1. Copy `.env.example` to `.env` in the project root (keep the placeholder values for local use).
+2. Start the database from the project root: `docker compose up -d db`
+3. In the `backend` folder (PowerShell shown; use `source .venv/bin/activate` on macOS/Linux):
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -e ".[dev]"
+$env:DATABASE_URL = "postgresql+psycopg://hidayah:change-me@localhost:5432/hidayah"
+alembic upgrade head
+uvicorn app.main:app --reload     # http://localhost:8000/health and /ready, docs at /docs
+```
+
+Test the backend (needs the database running; it creates and drops a separate `hidayah_test`
+database):
+
+```powershell
+$env:TEST_DATABASE_URL = "postgresql+psycopg://hidayah:change-me@localhost:5432/hidayah_test"
+python -m pytest
 ```
 
 ## Test and build the website
