@@ -15,6 +15,26 @@ type Conversation = { id: string; title: string | null; created_at: string }
 
 const bookmarkLink = (b: Bookmark) => (b.type === 'hadith' ? `/hadith/${b.target_id}` : b.type === 'dua' ? '/duas' : '/quran')
 
+function VerifyBanner() {
+  const [state, setState] = useState<'idle' | 'sent' | 'error'>('idle')
+  async function resend() {
+    try {
+      await api('/auth/request-verification', { method: 'POST', auth: true })
+      setState('sent')
+    } catch {
+      setState('error')
+    }
+  }
+  return (
+    <div className="mt-4 rounded-md border border-bronze bg-white p-3 text-sm" role="status">
+      Your email is not confirmed yet.{' '}
+      {state === 'sent' ? 'A new link was sent.' : state === 'error' ? 'Could not send the link; try again later.' : (
+        <button type="button" className="text-emerald underline" onClick={() => void resend()}>Send me a confirmation link</button>
+      )}
+    </div>
+  )
+}
+
 export function AccountPage() {
   const { user, logout } = useAuth()
   const qc = useQueryClient()
@@ -55,6 +75,7 @@ export function AccountPage() {
     <Container className="max-w-3xl py-12">
       <h1 className="text-3xl sm:text-4xl">Your account</h1>
       <p className="mt-2">{user?.display_name ? `${user.display_name} · ` : ''}{user?.email}</p>
+      {user && !user.email_verified && <VerifyBanner />}
       {user?.roles.includes('admin') && <p className="mt-2"><Link className="text-emerald underline" to="/admin">Open the admin dashboard</Link></p>}
 
       <h2 className="mt-10 text-2xl">Bookmarks</h2>

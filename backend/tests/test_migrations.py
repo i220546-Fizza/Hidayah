@@ -11,7 +11,7 @@ def test_all_model_tables_exist_after_upgrade(migrated_engine):
     existing = set(inspect(migrated_engine).get_table_names())
     expected = set(Base.metadata.tables)
     assert expected <= existing
-    assert len(expected) == 42
+    assert len(expected) == 43
 
 
 def test_models_match_migrations_with_no_drift(migrated_engine):
@@ -45,4 +45,4 @@ def test_downgrade_then_upgrade_round_trip(migrated_engine, alembic_cfg):
     remaining = set(inspect(migrated_engine).get_table_names()) - {"alembic_version"}
     assert remaining == set()
     command.upgrade(alembic_cfg, "head")
-    assert len(set(inspect(migrated_engine).get_table_names()) & set(Base.metadata.tables)) == 42
+    assert len(set(inspect(migrated_engine).get_table_names()) & set(Base.metadata.tables)) == 43

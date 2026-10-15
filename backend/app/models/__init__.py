@@ -1,5 +1,6 @@
 """Import every model so Alembic and SQLAlchemy see the full schema."""
 
+from app.models.email_tokens import EmailToken
 from app.models.assistant import AnswerFeedback, Conversation, Message, MessageCitation
 from app.models.bookmarks import Bookmark
 from app.models.duas import Dua, DuaCategory
@@ -23,7 +24,7 @@ from app.models.sources import Source, SourceReview, SourceVersion
 from app.models.users import AuthIdentity, Role, User, UserPreference, UserRole, UserSession
 
 __all__ = [
-    "AnswerFeedback", "AnswerOption", "AuditEvent", "AuthIdentity", "Bookmark", "Chunk",
+    "AnswerFeedback", "EmailToken", "AnswerOption", "AuditEvent", "AuthIdentity", "Bookmark", "Chunk",
     "ChunkEmbedding", "Conversation", "Document", "Dua", "DuaCategory", "EvalCase",
     "EvalDataset", "EvalResult", "EvalRun", "Explanation", "HadithCollection",
     "HadithGrading", "HadithRecord", "IngestionJob", "LearningPath", "LearningPathItem",

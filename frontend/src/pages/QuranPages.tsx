@@ -72,9 +72,10 @@ export function SurahPage() {
   const offset = Number(params.get('offset') ?? 0) || 0
   const size = useArabicSize()
   const [open, setOpen] = useState<number | null>(null)
+  const [language, setLanguage] = useState<'en' | 'ur'>('en')
   const q = useQuery({
-    queryKey: ['surah', number, offset],
-    queryFn: () => api<SurahDetail>(`/surahs/${number}?language=en&limit=50&offset=${offset}`),
+    queryKey: ['surah', number, offset, language],
+    queryFn: () => api<SurahDetail>(`/surahs/${number}?language=${language}&limit=50&offset=${offset}`),
   })
   return (
     <Container className="py-12">
@@ -87,6 +88,12 @@ export function SurahPage() {
                 <h1 className="text-3xl sm:text-4xl">{d.surah.number}. {d.surah.name_english}</h1>
                 <p lang="ar" className="arabic mt-2 text-3xl text-emerald">{d.surah.name_arabic}</p>
               </div>
+              <label className="text-sm font-medium">Translation language
+                <select className="ml-2 min-h-11 rounded-md border border-sage bg-white px-2" value={language} onChange={(e) => setLanguage(e.target.value as 'en' | 'ur')}>
+                  <option value="en">English</option>
+                  <option value="ur">اردو (Urdu)</option>
+                </select>
+              </label>
               <div className="flex items-center gap-2" role="group" aria-label="Arabic text size">
                 <Button variant="secondary" disabled={!size.canSmaller} onClick={size.smaller} aria-label="Smaller Arabic text">A−</Button>
                 <Button variant="secondary" disabled={!size.canBigger} onClick={size.bigger} aria-label="Larger Arabic text">A+</Button>
@@ -106,7 +113,7 @@ export function SurahPage() {
                       <SourceCredit source={v.source} label="Arabic text" />
                       {v.translations.map((t, i) => (
                         <div key={i} className="mt-4 border-t border-sand pt-3">
-                          <p>{t.text}</p>
+                          <p lang={t.language} className={t.language === 'ur' ? 'urdu text-xl' : ''}>{t.text}</p>
                           <SourceCredit source={t.source} label="Translation" />
                         </div>
                       ))}

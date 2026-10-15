@@ -1,7 +1,7 @@
 # Database schema
 
 PostgreSQL 16 with the pgvector extension. Schema is defined in `backend/app/models/` and
-created only through Alembic migrations in `backend/migrations/`. 42 tables.
+created only through Alembic migrations in `backend/migrations/`. 43 tables (migration 0003 added `email_tokens`).
 
 ## Groups
 

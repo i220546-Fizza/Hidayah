@@ -48,6 +48,15 @@ class Settings(BaseSettings):
     ask_rate_limit: int = 20  # questions per window per user
     ask_rate_window_seconds: int = 3600
 
+    # --- Email (nothing is sent unless smtp_host is set; otherwise links are only logged in development) ---
+    public_site_url: str = "http://localhost:5173"
+    smtp_host: str | None = None
+    smtp_port: int = 587
+    smtp_username: str | None = None
+    smtp_password: str | None = None
+    mail_from: str = "Hidayah <no-reply@localhost>"
+    email_token_hours: int = 2
+
     @property
     def secure_cookies(self) -> bool:
         return self.cookie_secure if self.cookie_secure is not None else self.env == "production"

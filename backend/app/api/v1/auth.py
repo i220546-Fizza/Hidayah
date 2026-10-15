@@ -3,10 +3,13 @@ from sqlalchemy.orm import Session
 
 from app.core.config import get_settings
 from app.db.session import get_db
+from pydantic import BaseModel, EmailStr, Field
+
 from app.schemas.auth import LoginRequest, RefreshRequest, RegisterRequest, TokenResponse, UserOut
 from app.security.deps import AuthContext, get_auth_context
 from app.security.rate_limit import limiter
 from app.services import auth as service
+from app.services import email_tokens
 from app.services.users import user_dto
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -58,6 +61,7 @@ def register(payload: RegisterRequest, request: Request, db: Session = Depends(g
     s = get_settings()
     limiter.check(f"register:{_client_ip(request)}", s.login_rate_limit, s.rate_limit_window_seconds)
     user = service.register(db, email=payload.email, password=payload.password, display_name=payload.display_name)
+    email_tokens.send_verification(db, user)
     return user_dto(user)
 
 
@@ -87,3 +91,43 @@ def logout(request: Request, response: Response, body: RefreshRequest | None = N
 @router.post("/logout-all", status_code=status.HTTP_204_NO_CONTENT)
 def logout_all(ctx: AuthContext = Depends(get_auth_context), db: Session = Depends(get_db)):
     service.logout_all(db, ctx.user.id)
+
+
+class TokenIn(BaseModel):
+    token: str = Field(min_length=10, max_length=200)
+
+
+class ForgotIn(BaseModel):
+    email: EmailStr
+
+
+class ResetIn(TokenIn):
+    new_password: str = Field(max_length=256)
+
+
+@router.post("/request-verification", status_code=status.HTTP_204_NO_CONTENT)
+def request_verification(request: Request, ctx: AuthContext = Depends(get_auth_context), db: Session = Depends(get_db)):
+    s = get_settings()
+    limiter.check(f"verify:{ctx.user.id}", 5, s.rate_limit_window_seconds)
+    email_tokens.send_verification(db, ctx.user)
+
+
+@router.post("/verify-email", status_code=status.HTTP_204_NO_CONTENT)
+def verify_email(payload: TokenIn, request: Request, db: Session = Depends(get_db)):
+    s = get_settings()
+    limiter.check(f"verify-token:{_client_ip(request)}", s.login_rate_limit, s.rate_limit_window_seconds)
+    email_tokens.verify_email(db, payload.token)
+
+
+@router.post("/forgot-password", status_code=status.HTTP_204_NO_CONTENT)
+def forgot_password(payload: ForgotIn, request: Request, db: Session = Depends(get_db)):
+    s = get_settings()
+    limiter.check(f"forgot:{_client_ip(request)}", s.login_rate_limit, s.rate_limit_window_seconds)
+    email_tokens.request_reset(db, payload.email)
+
+
+@router.post("/reset-password", status_code=status.HTTP_204_NO_CONTENT)
+def reset_password(payload: ResetIn, request: Request, db: Session = Depends(get_db)):
+    s = get_settings()
+    limiter.check(f"reset:{_client_ip(request)}", s.login_rate_limit, s.rate_limit_window_seconds)
+    email_tokens.reset_password(db, payload.token, payload.new_password)

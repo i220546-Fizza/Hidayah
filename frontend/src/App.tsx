@@ -7,6 +7,7 @@ import { AccountPage } from '@/pages/AccountPage'
 import { AskPage } from '@/pages/AskPage'
 import { CollectionPage, DuasPage, HadithDetailPage, HadithPage } from '@/pages/HadithDuaPages'
 import { AboutPage, ContactPage, PrivacyPage, SourcesPage, TermsPage } from '@/pages/InfoPages'
+import { ForgotPasswordPage, ResetPasswordPage, VerifyEmailPage } from '@/pages/EmailPages'
 import { LandingPage } from '@/pages/LandingPage'
 import { LearningPage, PathPage, QuizPage } from '@/pages/LearningPages'
 import { LoginPage } from '@/pages/LoginPage'
@@ -31,6 +32,9 @@ export default function App() {
               <Route index element={<LandingPage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="register" element={<RegisterPage />} />
+              <Route path="forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="reset-password" element={<ResetPasswordPage />} />
+              <Route path="verify-email" element={<VerifyEmailPage />} />
               <Route path="ask" element={<AskPage />} />
               <Route path="search" element={<SearchPage />} />
               <Route path="quran" element={<QuranPage />} />

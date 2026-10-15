@@ -10,6 +10,7 @@ import { TextField } from '@/components/ui/TextField'
 import { ApiError, api } from '@/lib/api'
 import type { AdminSource, AuditEvent, Page, Readiness, Review, Stats } from '@/lib/types'
 import type { User } from '@/features/auth/types'
+import { PathBuilder, QuizBuilder } from './Authoring'
 
 const errText = (e: unknown) => (e instanceof ApiError ? [e.message, ...e.details].join(' ') : e ? 'Something went wrong.' : null)
 
@@ -276,7 +277,7 @@ function ApproveList({ title, path, statusPath }: { title: string; path: string;
       <h2 className="text-2xl">{title}</h2>
       {set.error && <div className="mt-2"><FormError title={errText(set.error)!} /></div>}
       <Async query={q}>
-        {(items) => items.length === 0 ? <p className="mt-2 text-sm">None yet. Create them through the admin API; they stay hidden until approved.</p> : (
+        {(items) => items.length === 0 ? <p className="mt-2 text-sm">None yet. Create one below; it stays hidden until approved.</p> : (
           <ul className="mt-3 space-y-2">
             {items.map((i) => (
               <li key={i.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-sand bg-white px-4 py-2 text-sm">
@@ -298,7 +299,9 @@ export function AdminLearning() {
   return (
     <div className="space-y-10">
       <ApproveList title="Quizzes" path="/admin/quizzes" statusPath={(id) => `/admin/quizzes/${id}/status`} />
+      <QuizBuilder />
       <ApproveList title="Learning paths" path="/admin/paths" statusPath={(id) => `/admin/paths/${id}/status`} />
+      <PathBuilder />
     </div>
   )
 }

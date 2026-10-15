@@ -64,10 +64,10 @@ Statuses: Not Started, In Progress, Implemented, Tested, Blocked.
 | Learning paths, quizzes, daily verse, reading progress, admin stats | Tested | 12 tests |
 | Web pages (all of the above plus account and admin) | Tested + Browser-checked | 41 web tests; 23 browser checks incl. 375px width |
 | Mobile app | Bundled only | Type check, 9 client tests, Android+iOS Metro bundle. Never run on a phone |
-| Admin: create quizzes and paths | API only | The web admin can approve/archive them but not author them |
-| Urdu | Not Started | Pursued in parallel; not part of the first launch |
+| Admin: create quizzes and paths | Tested + Browser-checked | Forms in the admin Learning tab; quiz can't be approved without approved-source explanations |
+| Urdu | Partly done | Reader has an English/Urdu translation switch with Urdu font and right-to-left text; works as soon as an Urdu source is approved. The Urdu SOURCES are not obtained (licensing) and the interface itself is English only. Ask answers are English only |
 | Quran, hadith, dua CONTENT | Blocked | Nothing imported. Needs licence decisions, see `docs/source-register.md` |
-| Email verification, password reset | Blocked | Needs an email service and your approval |
+| Email verification, password reset | Tested + Browser-checked | One-time hashed links, 2 h expiry, reset signs out all devices, same reply for unknown emails. Nothing is sent until you configure `SMTP_HOST`; in development the link is logged. NOT tested with a real mail server |
 | Deployment | Not Started | Needs your approval; see `docs/deployment.md` |
 
 ## Contrast check (WCAG, measured)

@@ -155,3 +155,52 @@ describe('RequireAuth', () => {
   })
   it('lets an admin through', () => { guarded(auth({ status: 'authenticated', user: user(['admin']) }), 'admin'); expect(screen.getByText('Secret')).toBeInTheDocument() })
 })
+
+describe('Email pages', () => {
+  it('reset page posts the token and new password', async () => {
+    const { ResetPasswordPage } = await import('@/pages/EmailPages')
+    fetchMock.mockImplementation(() => Promise.resolve(new Response(null, { status: 204 })))
+    mount('/reset-password?token=abcdefghij1234', <ResetPasswordPage />, '/reset-password')
+    await userEvent.type(screen.getByLabelText('New password'), 'a-long-new-password')
+    await userEvent.click(screen.getByRole('button', { name: 'Change password' }))
+    expect(await screen.findByText(/Your password was changed/)).toBeInTheDocument()
+    expect(JSON.parse(fetchMock.mock.calls[0][1].body as string)).toEqual({ token: 'abcdefghij1234', new_password: 'a-long-new-password' })
+  })
+  it('verify page shows the server error for a bad link', async () => {
+    const { VerifyEmailPage } = await import('@/pages/EmailPages')
+    reply({ detail: 'This link is invalid or has expired. Please request a new one.' }, 401)
+    mount('/verify-email?token=abcdefghij1234', <VerifyEmailPage />, '/verify-email')
+    expect(await screen.findByRole('alert')).toHaveTextContent('invalid or has expired')
+  })
+  it('forgot page gives the same message either way', async () => {
+    const { ForgotPasswordPage } = await import('@/pages/EmailPages')
+    fetchMock.mockImplementation(() => Promise.resolve(new Response(null, { status: 204 })))
+    mount('/forgot-password', <ForgotPasswordPage />)
+    await userEvent.type(screen.getByLabelText('Email'), 'a@example.com')
+    await userEvent.click(screen.getByRole('button', { name: 'Send reset link' }))
+    expect(await screen.findByText(/If an account exists/)).toBeInTheDocument()
+  })
+})
+
+describe('Admin quiz builder', () => {
+  it('sends a quiz with exactly one correct option', async () => {
+    const { QuizBuilder } = await import('@/pages/admin/Authoring')
+    fetchMock.mockImplementation((_url: string, init?: RequestInit) =>
+      Promise.resolve(init?.method === 'POST' ? json({ id: 1 }, 201) : json({ items: [{ id: 4, title: 'Approved source' }], total: 1, limit: 100, offset: 0 })))
+    mount('/x', <QuizBuilder />)
+    await userEvent.type(screen.getByLabelText('Title'), 'My test quiz')
+    await userEvent.type(screen.getByLabelText('Question text'), 'Which one?')
+    await userEvent.type(screen.getByLabelText('Option 1'), 'First')
+    await userEvent.type(screen.getByLabelText('Option 2'), 'Second')
+    await userEvent.click(screen.getAllByRole('radio')[1])
+    await userEvent.type(screen.getByLabelText('Explanation'), 'Because')
+    await screen.findByRole('option', { name: 'Approved source' })
+    await userEvent.selectOptions(screen.getByLabelText('Supporting approved source'), '4')
+    await userEvent.click(screen.getByRole('button', { name: 'Save quiz as draft' }))
+    await screen.findByText('Quiz saved as a draft.')
+    const post = fetchMock.mock.calls.find(([, i]) => i?.method === 'POST')!
+    const body = JSON.parse(post[1].body as string)
+    expect(body.questions[0].options).toEqual([{ text: 'First', is_correct: false }, { text: 'Second', is_correct: true }])
+    expect(body.questions[0].explanation.source_id).toBe(4)
+  })
+})

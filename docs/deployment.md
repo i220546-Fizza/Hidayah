@@ -14,7 +14,7 @@ Do not deploy until you approve. This lists what is needed so you can decide.
 - Static hosting for the website (`frontend`, `npm run build`, serve `dist/`).
 - A domain name and HTTPS. In production the refresh cookie becomes `Secure` automatically.
 - An Anthropic API key for answers (set as `ANTHROPIC_API_KEY` in the host's secret store, never in git).
-- Optionally an email service (verification, password reset) and error monitoring.
+- An email service (SMTP) for verification and password-reset mail: set `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `MAIL_FROM`, `PUBLIC_SITE_URL`. Without it no mail is sent. Optionally error monitoring.
 - For store apps: Google Play and Apple developer accounts, Expo EAS builds, real bundle identifiers.
 
 ## Required settings (environment variables)

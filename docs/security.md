@@ -58,3 +58,5 @@ Checked by reading the code and by tests unless marked otherwise.
 - Questions are sent to Anthropic with retrieved passages; the privacy page says so but is draft text pending legal review.
 - Chrome-level checks (CSP headers, HTTPS, secure cookies in production) need a real deployment to verify.
 - No third-party penetration test or dependency audit has been done (`npm audit` reports advisories in Expo's tree; not triaged).
+
+**Email links (added later).** Verification and reset tokens are random, stored only as a SHA-256 hash, single-use, expire after 2 hours, and a newer request cancels older ones. "Forgot password" answers identically for known and unknown emails and is rate limited (in memory, per process). A reset signs out every device. A weak new password does not burn the link. Not tested against a real mail server.

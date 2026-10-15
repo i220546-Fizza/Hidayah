@@ -47,6 +47,11 @@ export function LoginPage() {
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? 'Logging in' : 'Log in'}
         </Button>
+        <p className="text-sm">
+          <Link to="/forgot-password" className="font-medium text-emerald underline underline-offset-4">
+            Forgot your password?
+          </Link>
+        </p>
         <p className="text-sm text-charcoal/85">
           New to Hidayah?{' '}
           <Link to="/register" className="font-medium text-emerald underline underline-offset-4">
