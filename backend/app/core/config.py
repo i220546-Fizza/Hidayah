@@ -42,6 +42,12 @@ class Settings(BaseSettings):
     login_rate_limit: int = 10  # attempts per window per client+email
     rate_limit_window_seconds: int = 300
 
+    # --- Answer assistant (keys come from the environment only, never from code) ---
+    anthropic_api_key: str | None = None
+    anthropic_model: str = "claude-sonnet-5-5"
+    ask_rate_limit: int = 20  # questions per window per user
+    ask_rate_window_seconds: int = 3600
+
     @property
     def secure_cookies(self) -> bool:
         return self.cookie_secure if self.cookie_secure is not None else self.env == "production"
