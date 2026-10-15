@@ -79,10 +79,21 @@ asks this first. If Tanzil confirms commercial use in writing, the status return
 | A person (you) records `license_verified_by` and date | No |
 | Credit and link shown in the UI wherever the text appears | No (not built) |
 
-### 1.2 Other Arabic text sources
+### 1.2 Other Arabic text sources (backup search, 2026-10-15)
 
 | Source | Finding | Status |
 |---|---|---|
+| Quran Foundation API | See 2.1: no permanent copy without a signed licence | `restricted` |
+| Al Quran Cloud (alquran.cloud) | Says Quran text is free to store and display, commercial reproduction needs no permission, acknowledge Tanzil/Quran Academy. It republishes Tanzil's text, so it adds nothing over Tanzil itself and cannot grant more than Tanzil can | not used |
+| Quranic Arabic Corpus (corpus.quran.com, v0.4, Kais Dukes) | Licence shown as "GNU General Public License"; header says verbatim copies only, "CHANGING IT IS NOT ALLOWED", credit the Corpus and link to corpus.quran.com. Commercial use not addressed. Its annotation "builds on the verified Arabic text distributed by the Tanzil project", so it inherits Tanzil's terms and is no independent source. GPL on text data is also an unusual fit for an app | `restricted` |
+| Tarteel QUL, "Quran script: Unicode & Images" (30 resources) | The listing names no source or licence per resource and says "The information on this page comes from external sources and may contain errors." Its FAQ says commercial use is allowed but each resource has its own terms. Needs a resource-by-resource look, or an email to QUL | `pending_permission` |
+| King Fahd Glorious Quran Printing Complex (Madinah Mushaf) | Its page says it "allows the usage of the mentioned copy for free inside and outside of the Kingdom of Saudi Arabia", "in all personal and commercial fields", including apps and websites. But the copy described is the mushaf as **Adobe Illustrator vector files**, i.e. page artwork, not a Unicode text for a database or search. Fonts not confirmed (licence file would not load). Useful later for showing mushaf page images | not a text source; images `candidate` for later |
+
+**Conclusion:** there is no clean backup for the Arabic *text*. Every route found either inherits Tanzil's terms
+or lacks a stated licence. The Tanzil email is the critical path. A second email, to Tarteel QUL, would ask which
+Arabic script resources they can license for commercial storage, indexing and retrieval.
+
+---|---|---|
 | Quran Foundation API | See 2.1: no permanent copy without a signed licence | `restricted` |
 | Al Quran Cloud (alquran.cloud) | Says Quran text is free to store and display, commercial reproduction needs no permission, acknowledge Tanzil/Quran Academy. It republishes Tanzil's text, so it adds nothing over Tanzil itself | not used |
 

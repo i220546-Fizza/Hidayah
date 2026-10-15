@@ -144,3 +144,23 @@ We will not use the text until we have your written permission.
 
 Jazakum Allahu khayran,
 [Your name], [email]
+
+---
+
+## 7. Tarteel Quranic Universal Library (QUL): backup Arabic text source
+
+**Where to send:** the contact route on https://qul.tarteel.ai (I did not find an address on the pages I read; use the site's contact or feedback link).
+
+**Subject:** Licensing of Quran script resources in QUL for a learning platform
+
+Assalamu alaikum,
+
+I am building Hidayah, [description]. Your FAQ says QUL data can be used in commercial projects, but that each resource may have its own terms, and the "Quran script: Unicode" listing shows no source or licence per resource. Could you please tell us, for [name the specific script resource, e.g. the Uthmani Unicode script]:
+
+1. Who is the original source and rights holder, and under what licence is it provided?
+2. May we use it commercially in a public website and mobile apps?
+3. May we store it permanently, index it for search, and retrieve verses from it in an answer assistant, with credit?
+4. What credit line do you require?
+
+Jazakum Allahu khayran,
+[Your name], [email]
