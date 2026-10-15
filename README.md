@@ -100,6 +100,13 @@ docker compose --profile test stop db-test    # when you are done
 | `role "hidayah" does not exist` | Another PostgreSQL answers on that port, not the Hidayah container. Check the port in `DATABASE_URL` matches `HIDAYAH_DB_PORT`. |
 | `password authentication failed` | The Docker volume remembers the password it was first created with. Changing `POSTGRES_PASSWORD` later does nothing. Use the original password. Do not delete the volume to "fix" it unless you accept losing the data. |
 
+## What the app does now
+
+- Website pages: Quran, Hadith, Duas, Search, Ask, Learning and quizzes, Sources and credits, Account, and an admin dashboard at `/admin` (create an administrator with `python -m app.cli create-admin --email you@example.com` from `backend/`).
+- Every page shows honest empty states until a source is approved. To see content you must register a source in the admin dashboard, verify its licence, import a file, and approve it. Import only text you are permitted to use.
+- The Ask page needs `ANTHROPIC_API_KEY` in your `.env` (the key stays on your computer). Without it the page says the assistant is not switched on.
+- Phone app: see `mobile/README.md`.
+
 ## Test and build the website
 
 ```bash
