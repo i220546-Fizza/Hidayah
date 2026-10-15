@@ -37,3 +37,24 @@ actions such as role changes.
 ## Not built yet
 Email verification and password reset (need an email provider), two-factor login, and mobile secure
 storage.
+
+## Review of Phases 5 to 9 (assistant, content, admin, mobile)
+
+Checked by reading the code and by tests unless marked otherwise.
+
+**Held up**
+- Every public and assistant query goes through an approved source, and the assistant also needs `rag_permission`. Tests prove that unapproved, under-review and later-revoked content disappears (including from saved answers).
+- Admin routes (`/admin/*`) all use `require_admin`; learner routes that change data use the signed-in user and never accept a user id from the request.
+- Conversations and feedback are owner-only (404 for other people's).
+- The assistant cannot invent a citation: citations are rows from our database; answers that name unknown evidence, are malformed, or contain Arabic script are discarded. Evidence text is escaped before it enters the prompt.
+- Quiz answers are never sent to the learner before submitting; scoring is on the server.
+- Import is all-or-nothing, byte-exact, and refuses unless the licence gate passes.
+- The Anthropic key is read only from the environment; no key is in code, tests or docs.
+- Mobile: refresh token in Keychain/Keystore (SecureStore), access token in memory only.
+
+**Known limits (not fixed)**
+- Rate limiting is in memory and per process (see Phase 4). The ask limit has the same limit. Public search and content endpoints are not rate limited; search uses a scan (`ILIKE`) that will need an index or a proper search backend at scale.
+- The admin file upload reads the whole body into memory before the 50 MB check. Fine for a trusted admin; put a body-size limit on the reverse proxy.
+- Questions are sent to Anthropic with retrieved passages; the privacy page says so but is draft text pending legal review.
+- Chrome-level checks (CSP headers, HTTPS, secure cookies in production) need a real deployment to verify.
+- No third-party penetration test or dependency audit has been done (`npm audit` reports advisories in Expo's tree; not triaged).

@@ -49,19 +49,26 @@ Statuses: Not Started, In Progress, Implemented, Tested, Blocked.
 | Running on Windows | Tested | Backend, migrations, 126 tests, health check run on your Windows PC with Docker Desktop |
 | Local database on host port 5433 | Tested | Container healthy, `check-db` OK, pgvector 0.8.1, migration 0001; the 126 tests took 17 minutes there (30 s in the sandbox): cause not yet investigated |
 
-## Everything else
+## Phases 5 to 9: sources, content, assistant, learning, web, mobile
 
-| Area | Status |
-|---|---|
-| Authentication and accounts | See Phase 4 above |
-| Quran, translation, tafsir | In Progress: licence register and source-status schema done (Tested), nothing imported; Tanzil commercial-use answer needed |
-| Hadith and gradings | Not Started (licensing review first) |
-| Duas | Not Started |
-| RAG assistant | Not Started |
-| Daily Companion, quizzes, learning paths | Not Started |
-| Admin dashboard | Not Started |
-| Mobile app | Not Started |
-| Deployment | Not Started (needs your approval) |
+"Tested" = automated tests passed in the build sandbox. "Browser-checked" = run in Chromium against the real backend with a throwaway database of obvious placeholder text.
+
+| Item | Status | Notes |
+|---|---|---|
+| Source register and licence review | Tested | 16 API tests; statuses, rights fields, review history, audit log |
+| Licence gate (nothing unapproved is shown or indexed) | Tested | DB constraint + service checks + content/ask/quiz tests |
+| Import pipeline (6 file kinds, API + CLI) | Tested | 23 tests: gate, all-or-nothing, text kept exactly, same-file idempotency |
+| Public Quran/tafsir/hadith/dua/search APIs | Tested | 8 tests; hidden sources never appear |
+| Ask pipeline (retrieval, guard rails, citations, history, feedback, rate limit) | Tested with a stand-in model | 17 tests. NOT tested against live Claude: needs `ANTHROPIC_API_KEY` |
+| Vector search | Tested with fake embeddings only | No embedding provider chosen yet; keyword search works without one |
+| Learning paths, quizzes, daily verse, reading progress, admin stats | Tested | 12 tests |
+| Web pages (all of the above plus account and admin) | Tested + Browser-checked | 41 web tests; 23 browser checks incl. 375px width |
+| Mobile app | Bundled only | Type check, 9 client tests, Android+iOS Metro bundle. Never run on a phone |
+| Admin: create quizzes and paths | API only | The web admin can approve/archive them but not author them |
+| Urdu | Not Started | Pursued in parallel; not part of the first launch |
+| Quran, hadith, dua CONTENT | Blocked | Nothing imported. Needs licence decisions, see `docs/source-register.md` |
+| Email verification, password reset | Blocked | Needs an email service and your approval |
+| Deployment | Not Started | Needs your approval; see `docs/deployment.md` |
 
 ## Contrast check (WCAG, measured)
 

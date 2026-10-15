@@ -16,7 +16,7 @@ Checked in the build environment: TypeScript type check, 9 unit tests for the AP
 3. In `mobile/`: `npm install` then `npx expo start`.
 4. Install **Expo Go** on the phone, scan the QR code. Android and iPhone both work this way.
 
-Add `ALLOWED_ORIGINS` is only for browsers; the phone app does not need CORS.
+The phone app does not need CORS (that setting is only for browsers).
 
 ## Store builds (needs your approval and accounts)
 

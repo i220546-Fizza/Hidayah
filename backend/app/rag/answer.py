@@ -40,7 +40,10 @@ _ARABIC = re.compile(r"[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]")
 
 
 def _prompt(question: str, evidence: list[Evidence]) -> str:
-    items = "\n".join(f'<e id="E{i}" ref="{e.label}">{e.text}</e>' for i, e in enumerate(evidence, start=1))
+    def clean(t: str) -> str:  # evidence is data: stop it from closing our tags or faking new ones
+        return t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+    items = "\n".join(f'<e id="E{i}" ref="{clean(e.label)}">{clean(e.text)}</e>' for i, e in enumerate(evidence, start=1))
     return f"<evidence>\n{items}\n</evidence>\n\nQuestion: {question}"
 
 
