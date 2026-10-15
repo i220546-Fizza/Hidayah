@@ -16,11 +16,12 @@ export const colors = {
   terracottaDeep: '#A24B40',
 } as const
 
+/** Names registered by expo-font in app/_layout.tsx (they match the @expo-google-fonts export names). */
 export const fonts = {
-  display: 'PlayfairDisplay',
-  sans: 'Inter',
-  arabic: 'Amiri',
-  urdu: 'NotoNastaliqUrdu',
+  display: 'PlayfairDisplay_600SemiBold',
+  sans: 'Inter_400Regular',
+  sansMedium: 'Inter_500Medium',
+  arabic: 'Amiri_400Regular',
 } as const
 
 export const radius = { sm: 6, md: 10 } as const

@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Hidayah",
+    "slug": "hidayah",
+    "version": "0.1.0",
+    "scheme": "hidayah",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#F8F5ED",
+    "ios": { "supportsTablet": true, "bundleIdentifier": "com.example.hidayah" },
+    "android": { "package": "com.example.hidayah" },
+    "plugins": ["expo-router", "expo-secure-store", "expo-font"],
+    "experiments": { "typedRoutes": false }
+  }
+}
