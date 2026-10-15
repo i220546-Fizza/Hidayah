@@ -69,15 +69,53 @@ def check_db() -> int:
     return 0
 
 
+def import_file_cmd(args) -> int:
+    """Import a local file as a new version of a registered source (same licence gate as the API)."""
+    from pathlib import Path
+
+    from app.ingest.service import import_file
+    from app.services import sources as sources_service
+
+    path = Path(args.path)
+    if not path.is_file():
+        print(f"File not found: {path}", file=sys.stderr)
+        return 1
+    with Session(make_engine()) as db:
+        try:
+            source = sources_service.get(db, args.source_id)
+            result = import_file(
+                db, None, source, kind=args.kind, raw=path.read_bytes(), filename=path.name,
+                version_label=args.version_label, language=args.language,
+                collection_slug=args.collection_slug, collection_name=args.collection_name,
+            )
+        except AppError as exc:
+            print(f"Import refused: {exc.message}", file=sys.stderr)
+            for line in exc.errors or []:
+                print(f"  - {line}", file=sys.stderr)
+            return 1
+    print("Nothing changed (same file already imported)." if result.unchanged else f"Imported: {result.counts}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(prog="app.cli")
     sub = parser.add_subparsers(dest="command", required=True)
     p = sub.add_parser("create-admin", help="Create (or promote) an administrator account")
     p.add_argument("--email", required=True)
     sub.add_parser("check-db", help="Test the database connection and show migration status")
+    i = sub.add_parser("import-file", help="Import a file as a new version of a registered source")
+    i.add_argument("--source-id", type=int, required=True)
+    i.add_argument("--kind", required=True)
+    i.add_argument("--version-label", required=True)
+    i.add_argument("--language")
+    i.add_argument("--collection-slug")
+    i.add_argument("--collection-name")
+    i.add_argument("path")
     args = parser.parse_args()
     if args.command == "check-db":
         return check_db()
+    if args.command == "import-file":
+        return import_file_cmd(args)
     return create_admin(args.email)
 
 
