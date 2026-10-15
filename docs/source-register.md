@@ -1,6 +1,6 @@
 # Source licence register
 
-**Review date:** 2026-10-10 (all "checked" entries below were read on this date).
+**Review date:** 2026-10-10, updated 2026-10-15 (entries were read on these dates).
 **Nothing has been imported. No email has been sent.** This is a record of what each rights
 holder's own page says, plus my reading of it. It is not legal advice, and the statuses are proposals
 for you to confirm. Where I could not read a page, the entry says so.
@@ -20,16 +20,18 @@ commercial; permanent storage in our own PostgreSQL database; full-text and vect
 retrieval of passages by the answer assistant (RAG); showing the exact edition and credit on every
 answer.
 
-**Schema gap (needs your decision).** The `sources` table today knows `draft / under_review / approved /
-rejected / archived`, and it records commercial use and redistribution. It has no field for permanent
-storage, search indexing or RAG separately, and no `candidate / pending_permission / restricted`. I
-recommend a small migration (0002) before any import. Not done yet; see "Decisions" at the end.
+**Schema (done 2026-10-15, migration 0002, 144 tests pass).** The `sources` table now has the statuses
+`draft, candidate, pending_permission, restricted, under_review, approved, rejected, archived` and
+separate `storage_permission`, `indexing_permission` and `rag_permission` fields (all default `unknown`).
+The database refuses `approved` unless commercial use **and** all three of those are `allowed`, the licence
+is verified by a person, and the content is verified. Rolling back to the old version maps `candidate` to
+`draft`, `pending_permission` to `under_review` and `restricted` to `rejected`.
 
 ---
 
 ## 1. Quran Arabic text
 
-### 1.1 Tanzil Project: `candidate` (project decision made; not production-approved)
+### 1.1 Tanzil Project: `pending_permission` (your candidate decision stands; commercial use is contradictory)
 
 | Field | Evidence |
 |---|---|
@@ -39,12 +41,21 @@ recommend a small migration (0002) before any import. Not done yet; see "Decisio
 | Version | Version 1.1, released 12 February 2021 (tanzil.net/updates) |
 | Source URL | https://tanzil.net/download/ ; updates: https://tanzil.net/updates/ |
 | Text type to use | Uthmani (matches the Madinah mushaf), unchanged. Decision on the exact variant is open |
-| Commercial use | Not restricted by the terms; allowed with the credit above |
+| Commercial use | Download-page terms do not restrict it; the FAQ says resources are "available for non-commercial purposes". **Contradiction, unresolved** |
 | Redistribution | Verbatim copies allowed with the notice |
 | Permanent database storage | Fits "verbatim copy" only if stored unchanged (see conflicts below) |
 | Search indexing | Not mentioned |
 | RAG retrieval | Not mentioned |
 | Attribution we must show | "Quran text: Tanzil Project (tanzil.net), version 1.1, CC BY 3.0", linked to https://tanzil.net, and the copyright notice kept with the stored text |
+
+**New finding (2026-10-15): Tanzil's own pages disagree about commercial use.** The download page terms
+(above) say the text "can be used in any website or application" with credit and a link, and the licence
+line says CC BY 3.0. But the Tanzil FAQ, in "For Developers", answers "I want to develop a Quranic
+website/application. Can I use your resources?" with: "Sure. We have provided all resources used in Tanzil in
+our resources page. They are available for non-commercial purposes." (https://tanzil.net/docs/faq). The FAQ
+is not clearly about the Quran text file alone, but it can be read as limiting everything on that site to
+non-commercial use. Until Tanzil answers, we cannot call commercial use `allowed`. The email to Tanzil now
+asks this first. If Tanzil confirms commercial use in writing, the status returns to `candidate`.
 
 **Open points before it can become `approved`:**
 - The licence says CC BY 3.0, which normally allows changes, but Tanzil's terms say changing the text is not
@@ -174,7 +185,7 @@ permission exists, Hidayah shows **no grade**, and says so; we do not infer one.
 
 | Content | Best position today |
 |---|---|
-| Arabic Quran text | Tanzil v1.1: `candidate`; questions drafted |
+| Arabic Quran text | Tanzil v1.1: `pending_permission` (candidate decision kept; commercial use contradictory; email drafted) |
 | English translation | Pickthall `candidate` (needs legal confirmation); everything else needs permission |
 | Urdu translation | Nothing usable yet |
 | Hadith (Bukhari, Muslim) | Nothing usable yet; sunnah.com request drafted |
@@ -191,13 +202,15 @@ permission exists, Hidayah shows **no grade**, and says so; we do not infer one.
 4. An answer may only quote passages from approved sources; with none, it says it cannot answer.
 5. No grading is shown without its grader and permission.
 
-## Decisions I need from you
+## Decisions made (2026-10-15)
 
-1. **Schema migration 0002**: add `candidate`, `pending_permission`, `restricted` statuses and separate permissions
-   for storage, indexing and RAG. Recommended before any import. Approve?
-2. **Emails**: six drafts are in `docs/permission-requests.md`. I have no verified contact addresses for most
-   rights holders, so you (or I, once you give approval) would look those up first.
-3. **Urdu strategy**: since no Urdu translation is clearly usable, do you prefer to (a) pursue permission from
-   specific publishers, (b) identify a specific public-domain edition of Kanz-ul-Iman or Junagarhi with a
-   clean text source, or (c) launch Arabic + English first?
-4. **English strategy**: Pickthall is usable but dated; do you want to wait for permission for a modern translation?
+1. Migration 0002 approved and built (see Schema above).
+2. Permission emails: contact routes found and added to the drafts; **nothing sent**.
+3. Urdu: launch with Arabic + English first; pursue Urdu permissions in parallel.
+4. English: Pickthall kept as the interim `candidate`, pending legal confirmation for the countries we serve.
+
+## Still open
+
+- Tanzil's written answer on commercial use, derived search data and embeddings. Without it there is no
+  approved Quran text, so nothing can go live. This is now the most important email.
+- Your confirmation that Pickthall is acceptable after legal review.

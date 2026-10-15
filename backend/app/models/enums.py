@@ -33,6 +33,25 @@ class ApprovalStatus(str, enum.Enum):
     ARCHIVED = "archived"
 
 
+class SourceStatus(str, enum.Enum):
+    """
+    Where a source stands in the licence review. Only APPROVED may enter production.
+
+    candidate           looks usable; project decision made; verification still open
+    pending_permission  terms unclear or do not cover our use; written permission needed
+    restricted          terms conflict with our use, or provenance is unclear; cannot be used now
+    """
+
+    DRAFT = "draft"
+    CANDIDATE = "candidate"
+    PENDING_PERMISSION = "pending_permission"
+    RESTRICTED = "restricted"
+    UNDER_REVIEW = "under_review"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+    ARCHIVED = "archived"
+
+
 class VerificationStatus(str, enum.Enum):
     UNVERIFIED = "unverified"
     VERIFIED = "verified"

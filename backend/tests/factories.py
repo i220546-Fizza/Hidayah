@@ -6,7 +6,7 @@ from itertools import count
 from sqlalchemy.orm import Session
 
 from app.models import Source, SourceVersion, User
-from app.models.enums import ApprovalStatus, Permission, SourceCategory, VerificationStatus
+from app.models.enums import Permission, SourceCategory, SourceStatus, VerificationStatus
 
 _n = count(1)
 
@@ -32,9 +32,12 @@ def make_source(session: Session, *, approved: bool = False, **kw) -> Source:
             rights_holder="Test Rights Holder",
             license_name="Test License",
             commercial_use=Permission.ALLOWED,
+            storage_permission=Permission.ALLOWED,
+            indexing_permission=Permission.ALLOWED,
+            rag_permission=Permission.ALLOWED,
             license_verified_at=datetime.now(timezone.utc),
             verification_status=VerificationStatus.VERIFIED,
-            approval_status=ApprovalStatus.APPROVED,
+            approval_status=SourceStatus.APPROVED,
         )
     fields.update(kw)
     source = Source(**fields)

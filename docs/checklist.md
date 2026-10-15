@@ -54,7 +54,7 @@ Statuses: Not Started, In Progress, Implemented, Tested, Blocked.
 | Area | Status |
 |---|---|
 | Authentication and accounts | See Phase 4 above |
-| Quran, translation, tafsir | In Progress: licence register written, nothing imported; awaiting your decisions |
+| Quran, translation, tafsir | In Progress: licence register and source-status schema done (Tested), nothing imported; Tanzil commercial-use answer needed |
 | Hadith and gradings | Not Started (licensing review first) |
 | Duas | Not Started |
 | RAG assistant | Not Started |

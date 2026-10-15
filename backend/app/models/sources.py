@@ -18,9 +18,9 @@ from sqlalchemy.sql import func
 
 from app.db.base import Base, TimestampMixin
 from app.models.enums import (
-    ApprovalStatus,
     Permission,
     SourceCategory,
+    SourceStatus,
     VerificationStatus,
     pg_enum,
 )
@@ -31,7 +31,8 @@ class Source(TimestampMixin, Base):
     One registered work (a Quran text, a translation, a tafsir, a hadith collection...).
 
     LICENCE RULE (enforced by the database): a source can only be 'approved' once its
-    licence has been verified by a person AND commercial use is explicitly 'allowed'.
+    licence has been verified by a person AND commercial use, permanent storage, search
+    indexing and answer-assistant (RAG) retrieval are each explicitly 'allowed'.
     Unknown or unclear rights can never reach production.
     """
 
@@ -40,7 +41,9 @@ class Source(TimestampMixin, Base):
         CheckConstraint(
             "approval_status <> 'approved' OR ("
             "commercial_use = 'allowed' AND license_verified_at IS NOT NULL "
-            "AND license_name IS NOT NULL AND rights_holder IS NOT NULL)",
+            "AND license_name IS NOT NULL AND rights_holder IS NOT NULL "
+            "AND storage_permission = 'allowed' AND indexing_permission = 'allowed' "
+            "AND rag_permission = 'allowed')",
             name="approved_requires_verified_commercial_licence",
         ),
         CheckConstraint(
@@ -71,6 +74,25 @@ class Source(TimestampMixin, Base):
     redistribution: Mapped[Permission] = mapped_column(
         pg_enum(Permission, "redistribution"), default=Permission.UNKNOWN, nullable=False
     )
+    # Our intended uses, recorded separately because a licence may allow some and not others.
+    storage_permission: Mapped[Permission] = mapped_column(
+        pg_enum(Permission, "storage_permission"),
+        default=Permission.UNKNOWN,
+        server_default=Permission.UNKNOWN.value,
+        nullable=False,
+    )
+    indexing_permission: Mapped[Permission] = mapped_column(
+        pg_enum(Permission, "indexing_permission"),
+        default=Permission.UNKNOWN,
+        server_default=Permission.UNKNOWN.value,
+        nullable=False,
+    )
+    rag_permission: Mapped[Permission] = mapped_column(
+        pg_enum(Permission, "rag_permission"),
+        default=Permission.UNKNOWN,
+        server_default=Permission.UNKNOWN.value,
+        nullable=False,
+    )
     attribution_required: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
     attribution_text: Mapped[str | None] = mapped_column(Text)
     rights_notes: Mapped[str | None] = mapped_column(Text)
@@ -85,9 +107,9 @@ class Source(TimestampMixin, Base):
         default=VerificationStatus.UNVERIFIED,
         nullable=False,
     )
-    approval_status: Mapped[ApprovalStatus] = mapped_column(
-        pg_enum(ApprovalStatus, "approval_status"),
-        default=ApprovalStatus.DRAFT,
+    approval_status: Mapped[SourceStatus] = mapped_column(
+        pg_enum(SourceStatus, "approval_status"),
+        default=SourceStatus.DRAFT,
         nullable=False,
         index=True,
     )
@@ -133,11 +155,11 @@ class SourceReview(Base):
     reviewer_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL")
     )
-    from_status: Mapped[ApprovalStatus] = mapped_column(
-        pg_enum(ApprovalStatus, "review_from_status"), nullable=False
+    from_status: Mapped[SourceStatus] = mapped_column(
+        pg_enum(SourceStatus, "review_from_status"), nullable=False
     )
-    to_status: Mapped[ApprovalStatus] = mapped_column(
-        pg_enum(ApprovalStatus, "review_to_status"), nullable=False
+    to_status: Mapped[SourceStatus] = mapped_column(
+        pg_enum(SourceStatus, "review_to_status"), nullable=False
     )
     note: Mapped[str | None] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(

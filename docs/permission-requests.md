@@ -14,7 +14,7 @@ credit, and its answer assistant only quotes from sources we are permitted to us
 
 ## 1. sunnah.com maintainers
 
-**Where to send:** the contact page https://sunnah.com/contact (the developers page also points to GitHub issues).
+**Where to send:** the contact form at https://sunnah.com/contact (it has Name, Email and message fields; no email address is shown). The developers page https://sunnah.com/developers says API keys are requested through a GitHub issue.
 
 **Subject:** Permission request: use of Sahih al-Bukhari and Sahih Muslim data in Hidayah
 
@@ -42,7 +42,7 @@ Jazakum Allahu khayran,
 
 ## 2. Tanzil Project
 
-**Where to send:** the contact link on https://tanzil.net (I did not read an address from the site; please use the official contact page).
+**Where to send:** Tanzil's pages do not show an email address. The FAQ (https://tanzil.net/docs/faq) says "ask your question ... via our contact page", so use the contact link on https://tanzil.net. (https://tanzil.net/docs/contact returned "page does not exist".)
 
 **Subject:** Clarifying the terms for the Tanzil Quran text (v1.1)
 
@@ -50,7 +50,7 @@ Assalamu alaikum,
 
 I am building Hidayah, [description], and would like to use the Tanzil Uthmani Quran text (version 1.1, 2021) unchanged, with the credit "Tanzil Project" and a link to tanzil.net, as your terms require. Your terms say the text may not be changed and that the licence is Creative Commons Attribution 3.0. Could you please confirm:
 
-1. We may use the text in a public website and mobile apps, including a service with paid features.
+1. **Commercial use.** The download page says the text "can be used in any website or application" with credit, but your FAQ says resources are "available for non-commercial purposes". May we use the Quran text in a public website and mobile apps, including a service with paid features?
 2. We may store the text unchanged in our own database.
 3. We may create *derived search data* (for example the text with diacritics removed, and numerical embeddings used for search) in separate fields, while the displayed text stays unchanged. Does this count as "changing" the text?
 4. We may split the text by verse for retrieval by an answer assistant, quoting verses verbatim with the credit.
@@ -63,7 +63,7 @@ Jazakum Allahu khayran,
 
 ## 3. Furqaan Institute of Quranic Education (The Clear Quran, Dr. Mustafa Khattab)
 
-**Where to send:** the contact details on https://theclearquran.org (the copyright page I tried returned no terms, so please check the site for a permissions address).
+**Where to send:** I found no contact address or form on theclearquran.org (its copyright page and contact page returned no terms or contacts). Check the site footer or the publisher's page; the Quran.com team also hosts a permission-request thread at https://feedback.quran.com/translation-and-reciter-requests/p/permission-request-for-educational-use-of-quran-translation, which shows how others have asked.
 
 **Subject:** Licensing request: The Clear Quran in a learning app
 
@@ -84,7 +84,7 @@ Jazakum Allahu khayran,
 
 ## 4. Talal A. Itani (Quran in Modern English / ClearQuran)
 
-**Where to send:** the contact details on https://clearquran.com (his blog says the translation is under a Creative Commons licence; the 2012 PDF says "All rights reserved". We need him to say which applies).
+**Where to send:** the contact page https://blog.clearquran.com/contact (his blog says the translation is under a Creative Commons licence; the 2012 PDF says "All rights reserved". We need him to say which applies).
 
 **Subject:** Clarifying the licence of your Quran translation
 
@@ -104,7 +104,7 @@ Jazakum Allahu khayran,
 
 ## 5. IIUM DEED hadith project (English Sahih Muslim, translated by Abdul Hamid Siddiqui)
 
-**Where to send:** the contact details of the Department of Islamic Education / the DEED hadith site at https://iium.edu.my/deed/hadith/muslim/ . Their page says the collection may "absolutely NOT be copied or used for commercial gain", so this request asks whether that can be varied, and who owns the translation.
+**Where to send:** deed@iiu.edu.my (the "Email DEED-IIU" link in the footer of https://iium.edu.my/deed/hadith/muslim/index.html; note the address domain is iiu.edu.my). Their page says the collection may "absolutely NOT be copied or used for commercial gain", so this request asks whether that can be varied, and who owns the translation.
 
 **Subject:** Permission request: Siddiqui translation of Sahih Muslim
 
