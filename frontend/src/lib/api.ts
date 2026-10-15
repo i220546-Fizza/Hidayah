@@ -29,18 +29,19 @@ export function hasAccessToken() {
   return accessToken !== null
 }
 
-type RequestOptions = Omit<RequestInit, 'body'> & { json?: unknown; auth?: boolean }
+type RequestOptions = Omit<RequestInit, 'body'> & { json?: unknown; raw?: Blob; auth?: boolean }
 
-async function rawRequest(path: string, { json, auth = false, headers, ...init }: RequestOptions) {
+async function rawRequest(path: string, { json, raw, auth = false, headers, ...init }: RequestOptions) {
   const h = new Headers(headers)
   h.set('X-Hidayah-Client', 'web') // tells the server to use the cookie flow
   if (json !== undefined) h.set('Content-Type', 'application/json')
+  if (raw !== undefined) h.set('Content-Type', 'application/octet-stream')
   if (auth && accessToken) h.set('Authorization', `Bearer ${accessToken}`)
   try {
     return await fetch(`${BASE_URL}${path}`, {
       ...init,
       headers: h,
-      body: json !== undefined ? JSON.stringify(json) : undefined,
+      body: raw !== undefined ? raw : json !== undefined ? JSON.stringify(json) : undefined,
       credentials: 'include',
     })
   } catch {

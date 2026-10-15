@@ -39,9 +39,9 @@ export function Header() {
         <div className="hidden items-center gap-2 lg:flex">
           {status === 'authenticated' ? (
             <>
-              <span className="max-w-48 truncate text-sm text-charcoal/85" title={accountName}>
+              <Link to="/account" className="max-w-48 truncate text-sm text-emerald underline" title={accountName}>
                 {accountName}
-              </span>
+              </Link>
               <Button variant="secondary" onClick={() => void logout()}>
                 Log out
               </Button>
@@ -82,7 +82,7 @@ export function Header() {
             ))}
             {status === 'authenticated' ? (
               <div className="mt-2 flex items-center justify-between gap-3">
-                <span className="truncate text-sm text-charcoal/85">{accountName}</span>
+                <Link to="/account" className="truncate text-sm text-emerald underline">{accountName}</Link>
                 <Button variant="secondary" onClick={() => void logout()}>
                   Log out
                 </Button>
